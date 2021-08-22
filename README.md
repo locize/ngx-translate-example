@@ -1,4 +1,9 @@
-# ngx-translate example
+# ngx-translate example with locize integration
+
+Uses [ngx-translate](http://www.ngx-translate.com/).
+
+The most important part regarding locize is [here](https://github.com/locize/ngx-translate-example/blob/main/src/app/app.module.ts).
+
 
 ## Development server
 
