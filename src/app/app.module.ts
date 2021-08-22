@@ -4,29 +4,25 @@ import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { environment } from '../environments/environment';
+
+// locizer is only used here to send the missing keys to locize
 import locizer from 'locizer';
-
-const locizeProjectId = '18a555a3-2dfa-4ded-b6d0-b50b02bd6bcb';
-const locizeVersion = 'latest';
-const locizeNamespace = 'translation';
-const locizeApiKey = '3a03f975-633b-405f-94b9-6e72a16f6092'; // only needed if you want to add new keys via locizer - remove on production!
-
 locizer.init({
-  projectId: locizeProjectId,
-  apiKey: locizeApiKey, // only needed if you want to add new keys via locizer - remove on production!
-  version: locizeVersion
+  projectId: environment.locizeProjectId,
+  apiKey: !environment.production && environment.locizeApiKey, // only needed if you want to add new keys via locizer - remove on production!
+  version: environment.locizeVersion
 });
+export class MyMissingTranslationHandler implements MissingTranslationHandler {
+  handle (params: MissingTranslationHandlerParams) {
+    locizer.add(environment.locizeNamespace, params.key);
+    return params.key;
+  }
+}
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, `https://api.locize.app/${locizeProjectId}/${locizeVersion}/`, `/${locizeNamespace}`);
-}
-
-export class MyMissingTranslationHandler implements MissingTranslationHandler {
-  handle (params: MissingTranslationHandlerParams) {
-    locizer.add(locizeNamespace, params.key);
-    return params.key;
-  }
+  return new TranslateHttpLoader(httpClient, `https://api.locize.app/${environment.locizeProjectId}/${environment.locizeVersion}/`, `/${environment.locizeNamespace}`);
 }
 
 @NgModule({

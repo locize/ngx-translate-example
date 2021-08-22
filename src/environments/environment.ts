@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  locizeProjectId: '18a555a3-2dfa-4ded-b6d0-b50b02bd6bcb',
+  locizeVersion: 'latest',
+  locizeNamespace: 'translation',
+  locizeApiKey: '3a03f975-633b-405f-94b9-6e72a16f6092' // only needed if you want to add new keys via locizer - remove on production!
 };
 
 /*
